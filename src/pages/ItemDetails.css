@@ -1,0 +1,128 @@
+
+.item-details-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+  color: #24372d;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dce5dc;
+  background: #fffdf7;
+  color: #24372d;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.item-details-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  background: #fffdf7;
+  border: 1px solid #e4e9df;
+  border-radius: 22px;
+  padding: 28px;
+}
+
+.item-details-image {
+  min-height: 350px;
+  background: #edf1e8;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #476b50;
+}
+
+.item-details-image span {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: white;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.item-details-content {
+  padding: 12px 0;
+}
+
+.item-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #59755e;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.item-details-content h1 {
+  font-size: clamp(26px, 4vw, 38px);
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+
+.item-price {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 12px 0;
+}
+
+.item-condition {
+  color: #68766c;
+}
+
+.item-description {
+  margin-top: 28px;
+  line-height: 1.7;
+}
+
+.item-description h3 {
+  margin-bottom: 8px;
+}
+
+.item-trust-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0;
+  color: #55745b;
+  font-size: 14px;
+}
+
+.contact-seller-button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #315d40;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contact-seller-button:hover {
+  background: #244a31;
+}
+
+@media (max-width: 700px) {
+  .item-details-card {
+    grid-template-columns: 1fr;
+    padding: 18px;
+    gap: 20px;
+  }
+
+  .item-details-image {
+    min-height: 250px;
+  }
+}
