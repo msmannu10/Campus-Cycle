@@ -706,3 +706,435 @@ footer p, footer small {
 .register-container .register-error {
     color: #c62828;
 }
+
+
+/* ===== CampusCycle Homepage Design ===== */
+
+.home-page {
+  min-height: 100vh;
+  padding: 55px 8%;
+  background: #fbfaf6;
+  color: #253b32;
+  text-align: center;
+}
+
+.home-page > h1 {
+  margin: 10px 0;
+  font-family: Manrope, sans-serif;
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: #245c43;
+}
+
+.home-page > p {
+  color: #758075;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* User navigation */
+
+.user-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin: 25px 0;
+}
+
+.user-section p {
+  margin: 0;
+  color: #43594b;
+  font-weight: 600;
+}
+
+.user-section a {
+  color: #39704e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-section a:hover {
+  color: #173d2b;
+}
+
+.user-section button {
+  padding: 9px 17px;
+  border: 1px solid #dce5da;
+  border-radius: 7px;
+  background: white;
+  color: #245c43;
+  font-weight: 600;
+}
+
+.user-section button:hover {
+  background: #eef3eb;
+}
+
+/* Search and filters */
+
+.home-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 850px;
+  margin: 30px auto 38px;
+}
+
+.home-controls input {
+  flex: 1;
+  min-width: 220px;
+  padding: 14px 16px;
+  border: 1px solid #e0e5dc;
+  border-radius: 9px;
+  outline: none;
+  background: white;
+  color: #253b32;
+}
+
+.home-controls input:focus,
+.home-controls select:focus {
+  border-color: #63876b;
+  box-shadow: 0 0 0 3px #63876b18;
+}
+
+.home-controls select {
+  padding: 14px;
+  border: 1px solid #e0e5dc;
+  border-radius: 9px;
+  background: white;
+  color: #43594b;
+  outline: none;
+}
+
+.home-controls .sell-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  border-radius: 9px;
+  background: #245c43;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.home-controls .sell-button:hover {
+  background: #194530;
+}
+
+/* Product cards */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 1150px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  padding: 0 0 18px;
+  border: 1px solid #e8eae1;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 5px 18px #253b3208;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px #253b3215;
+}
+
+.product-emoji {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 155px;
+  margin-bottom: 12px;
+  background: #edf1e8;
+  font-size: 65px;
+}
+
+.product-card:nth-child(3n + 2) .product-emoji {
+  background: #f5eee1;
+}
+
+.product-card:nth-child(3n) .product-emoji {
+  background: #e9f0ec;
+}
+
+.product-card > h3:first-of-type {
+  min-height: 44px;
+  margin: 8px 18px;
+  color: #253b32;
+  font-family: Manrope, sans-serif;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.product-card > p {
+  margin: 4px 18px;
+  color: #7b857a;
+  font-size: 12px;
+}
+
+.product-card > h3:nth-of-type(2) {
+  margin: 17px 18px 12px;
+  color: #245c43;
+  font-family: Manrope, sans-serif;
+  font-size: 21px;
+}
+
+.view-button {
+  align-self: flex-start;
+  margin: 0 18px;
+  padding: 9px 14px;
+  border: 1px solid #dce7dc;
+  border-radius: 7px;
+  color: #39704e;
+  font-size: 12px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.view-button:hover {
+  background: #245c43;
+  color: white;
+}
+
+/* Loading, errors and empty results */
+
+.home-page > p:has(+ .product-grid) {
+  color: #758075;
+}
+
+.product-grid:empty {
+  display: none;
+}
+
+/* Mobile responsive */
+
+@media (max-width: 850px) {
+  .home-page {
+    padding: 45px 5%;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .home-page {
+    padding: 35px 4%;
+  }
+
+  .user-section {
+    gap: 14px;
+  }
+
+  .home-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-controls input {
+    width: 100%;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .product-emoji {
+    height: 115px;
+    font-size: 48px;
+  }
+
+  .product-card > h3:first-of-type {
+    font-size: 14px;
+    margin: 7px 10px;
+  }
+
+  .product-card > p {
+    margin: 4px 10px;
+    font-size: 10px;
+  }
+
+  .product-card > h3:nth-of-type(2) {
+    margin: 12px 10px;
+    font-size: 18px;
+  }
+
+  .view-button {
+    margin: 0 10px;
+  }
+}
+
+
+/* Final small design polish */
+
+.product-emoji {
+  height: 130px;
+}
+
+.product-info {
+  padding: 16px 18px;
+}
+
+.product-card {
+  border-radius: 15px;
+}
+
+.product-card > p {
+  line-height: 1.6;
+}
+
+.view-button {
+  margin-top: 5px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #f0f5ef;
+}
+
+.view-button:hover {
+  background: #245c43;
+  color: white;
+}
+
+.edit-button,
+.delete-button {
+  width: calc(100% - 36px);
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+
+/* Register Page - Final Design */
+
+.register-page {
+  min-height: 85vh;
+  padding: 55px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f1e7;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 450px;
+  margin: auto;
+  padding: 36px;
+  background: #fffdf7;
+  border: 1px solid #e4e9df;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(36, 55, 45, 0.08);
+}
+
+.register-container h1 {
+  margin: 0 0 10px;
+  color: #245c43;
+  font-family: Manrope, sans-serif;
+  font-size: 29px;
+  font-weight: 800;
+}
+
+.register-container p {
+  color: #758075;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.register-container label {
+  color: #354b3c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.register-container input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #dce5dc;
+  border-radius: 9px;
+  background: white;
+  color: #24372d;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.register-container input:focus {
+  border-color: #63876b;
+  box-shadow: 0 0 0 3px #63876b18;
+}
+
+.register-container button {
+  margin-top: 10px;
+  padding: 14px;
+  border: none;
+  border-radius: 9px;
+  background: #245c43;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.register-container button:hover:not(:disabled) {
+  background: #194530;
+}
+
+.register-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.register-container .register-error {
+  padding: 11px;
+  border-radius: 8px;
+  background: #fff0ef;
+  color: #c62828;
+  font-size: 13px;
+}
+
+.register-container a {
+  color: #39704e;
+  font-weight: 700;
+}
+
+.register-container a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .register-page {
+    padding: 35px 15px;
+  }
+
+  .register-container {
+    padding: 25px 20px;
+  }
+}
