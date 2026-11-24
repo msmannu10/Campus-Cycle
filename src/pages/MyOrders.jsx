@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Package } from "lucide-react";
 import "./MyOrders.css";
 
-const API_URL = "http://localhost:5000/api/my-orders";
+const API_URL = "https://campus-cycle-backend.onrender.com/api/my-orders";
 
 function MyOrders() {
   const [orders, setOrders] = useState([]);

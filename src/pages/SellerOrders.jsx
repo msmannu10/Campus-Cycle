@@ -12,7 +12,7 @@ function SellerOrders() {
             const token = sessionStorage.getItem("campuscycleToken");
 
             const response = await fetch(
-                "http://localhost:5000/api/seller-orders",
+                "https://campus-cycle-backend.onrender.com/api/seller-orders",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -45,7 +45,7 @@ function SellerOrders() {
             const token = sessionStorage.getItem("campuscycleToken");
 
             const response = await fetch(
-                `http://localhost:5000/api/seller-orders/${orderId}/status`,
+                `https://campus-cycle-backend.onrender.com/api/seller-orders/${orderId}/status`,
                 {
                     method: "PATCH",
                     headers: {

@@ -14,8 +14,8 @@ import {
 
 import "./ItemDetails.css";
 
-const API_URL = "http://localhost:5000/api/products";
-const ORDER_API = "http://localhost:5000/api/orders";
+const API_URL = "https://campus-cycle-backend.onrender.com/api/products";
+const ORDER_API = "https://campus-cycle-backend.onrender.com/api/orders";
 
 export default function ItemDetails({
   products = [],
