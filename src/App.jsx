@@ -3,6 +3,7 @@ import SellerOrders from "./pages/SellerOrders";
 import MyOrders from "./pages/MyOrders";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+
 import { useState, useEffect, useCallback } from "react";
 
 import {
@@ -16,12 +17,84 @@ import {
 } from "react-router-dom";
 
 import "./App.css";
+
 import SellItem from "./pages/SellItem";
 import ItemDetails from "./pages/ItemDetails";
 import EditItem from "./pages/EditItem";
 
-const API_URL = "http://127.0.0.1:5000/api/products";
+// Backend API URL
+const API_URL = "https://campus-cycle-backend.onrender.com/api/products";
+// Remove duplicate products
+function removeDuplicateProducts(data) {
+  const uniqueMap = new Map();
 
+  data.forEach((product) => {
+    const productName = String(product.name || "")
+      .trim()
+      .toLowerCase();
+
+    const sellerId = Number(product.seller_id);
+
+    const category = String(
+      product.category_id ??
+      product.category_name ??
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+    const key = `${productName}-${sellerId}-${category}`;
+
+    const existing = uniqueMap.get(key);
+
+    if (!existing) {
+      uniqueMap.set(key, product);
+      return;
+    }
+
+    const isPreferredEngineering =
+      productName === "engineering mathematics" &&
+      Number(product.price) === 250;
+
+    const existingIsPreferredEngineering =
+      productName === "engineering mathematics" &&
+      Number(existing.price) === 250;
+
+    // Keep Engineering Mathematics priced at ₹250
+    if (
+      isPreferredEngineering &&
+      !existingIsPreferredEngineering
+    ) {
+      uniqueMap.set(key, product);
+      return;
+    }
+
+    // If both have ₹250 price, keep the smaller product ID
+    if (
+      isPreferredEngineering &&
+      existingIsPreferredEngineering &&
+      Number(product.product_id) <
+        Number(existing.product_id)
+    ) {
+      uniqueMap.set(key, product);
+      return;
+    }
+
+    // For other duplicates, keep the smaller product ID
+    if (
+      !isPreferredEngineering &&
+      !existingIsPreferredEngineering &&
+      Number(product.product_id) <
+        Number(existing.product_id)
+    ) {
+      uniqueMap.set(key, product);
+    }
+  });
+
+  return [...uniqueMap.values()];
+}
+
+// Homepage
 function Home({
   products,
   loading,
@@ -35,21 +108,25 @@ function Home({
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
+  // Search and category filter
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name
       .toLowerCase()
       .includes(search.toLowerCase());
 
     const matchesCategory =
-      category === "All" || product.category === category;
+      category === "All" ||
+      product.category === category;
 
     return matchesSearch && matchesCategory;
   });
 
+  // Check product ownership
   const isOwner = (product) => {
     return (
       student &&
-      Number(student.student_id) === Number(product.sellerId)
+      Number(student.student_id) ===
+        Number(product.sellerId)
     );
   };
 
@@ -62,28 +139,35 @@ function Home({
     if (!confirmDelete) return;
 
     try {
-      const token = sessionStorage.getItem("campuscycleToken");
+      const token = sessionStorage.getItem(
+        "campuscycleToken"
+      );
 
       if (!token) {
         throw new Error("Please login first.");
       }
 
-      const response = await fetch(`${API_URL}/${productId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${API_URL}/${productId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Unable to delete product.");
+        throw new Error(
+          data.message || "Unable to delete product."
+        );
       }
 
       alert("Product deleted successfully!");
-      fetchProducts();
 
+      fetchProducts();
     } catch (error) {
       alert(error.message);
     }
@@ -97,22 +181,16 @@ function Home({
         Buy and sell second-hand items within your campus.
       </p>
 
-      {/* Login / Logout / Orders section */}
+      {/* Login / Logout / Orders */}
       {student ? (
         <div className="user-section">
           <p>Welcome, {student.name}!</p>
 
-          <Link to="/my-orders">
-            My Orders
-          </Link>
+          <Link to="/my-orders">My Orders</Link>
 
-          <Link to="/seller-orders">
-            Seller Orders
-          </Link>
+          <Link to="/seller-orders">Seller Orders</Link>
 
-          <button onClick={onLogout}>
-            Logout
-          </button>
+          <button onClick={onLogout}>Logout</button>
         </div>
       ) : (
         <div className="user-section">
@@ -129,7 +207,7 @@ function Home({
         </p>
       )}
 
-      {/* Search and category filter */}
+      {/* Search and category */}
       <div className="home-controls">
         <input
           type="text"
@@ -145,7 +223,9 @@ function Home({
           <option value="All">All Categories</option>
           <option value="Books">Books</option>
           <option value="Electronics">Electronics</option>
-          <option value="Study Material">Study Material</option>
+          <option value="Study Material">
+            Study Material
+          </option>
           <option value="Stationery">Stationery</option>
           <option value="Other">Other</option>
         </select>
@@ -157,7 +237,7 @@ function Home({
         )}
       </div>
 
-      {/* Loading and error messages */}
+      {/* Loading and error */}
       {loading && <p>Loading products...</p>}
 
       {fetchError && <p>{fetchError}</p>}
@@ -165,7 +245,10 @@ function Home({
       {/* Product list */}
       <div className="product-grid">
         {filteredProducts.map((product) => (
-          <div className="product-card" key={product.id}>
+          <div
+            className="product-card"
+            key={product.id}
+          >
             <div className="product-emoji">
               {product.emoji || "📦"}
             </div>
@@ -197,7 +280,9 @@ function Home({
             {isOwner(product) && (
               <button
                 className="delete-button"
-                onClick={() => handleDelete(product.id)}
+                onClick={() =>
+                  handleDelete(product.id)
+                }
               >
                 Delete Item
               </button>
@@ -214,7 +299,12 @@ function Home({
 }
 
 // Protected Edit Page
-function ProtectedEdit({ student, products, loading, fetchProducts }) {
+function ProtectedEdit({
+  student,
+  products,
+  loading,
+  fetchProducts,
+}) {
   const { id } = useParams();
 
   if (!student) {
@@ -233,7 +323,10 @@ function ProtectedEdit({ student, products, loading, fetchProducts }) {
     return <Navigate to="/" replace />;
   }
 
-  if (Number(product.sellerId) !== Number(student.student_id)) {
+  if (
+    Number(product.sellerId) !==
+    Number(student.student_id)
+  ) {
     return <Navigate to="/" replace />;
   }
 
@@ -246,7 +339,7 @@ function AppRoutes() {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState("");
 
-  // Restore logged-in student after refresh
+  // Restore logged-in student
   const [student, setStudent] = useState(() => {
     try {
       const savedStudent = sessionStorage.getItem(
@@ -262,12 +355,12 @@ function AppRoutes() {
   });
 
   // Fetch products from backend
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (signal) => {
     try {
       setLoading(true);
       setFetchError("");
 
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, { signal });
 
       if (!response.ok) {
         throw new Error("Unable to load products.");
@@ -275,37 +368,81 @@ function AppRoutes() {
 
       const data = await response.json();
 
-      const formattedProducts = data.map((product) => ({
-        id: product.product_id,
-        sellerId: Number(product.seller_id),
-        name: product.name,
-        category: product.category_name,
-        price: Number(product.price),
-        condition: product.condition,
-        description: product.description,
-        emoji: "📦",
-      }));
+      if (!Array.isArray(data)) {
+        throw new Error(
+          "Invalid products data received."
+        );
+      }
+
+      // Remove duplicate records
+      const uniqueProducts =
+        removeDuplicateProducts(data);
+
+      console.log(
+        "Products received:",
+        data.map((product) => ({
+          id: product.product_id,
+          name: product.name,
+          price: product.price,
+        }))
+      );
+
+      console.log(
+        "Products after duplicate removal:",
+        uniqueProducts.map((product) => ({
+          id: product.product_id,
+          name: product.name,
+          price: product.price,
+        }))
+      );
+
+      // Format products for frontend
+      const formattedProducts = uniqueProducts.map(
+        (product) => ({
+          id: product.product_id,
+          sellerId: Number(product.seller_id),
+          name: product.name,
+          category: product.category_name,
+          price: Number(product.price),
+          condition: product.condition,
+          description: product.description,
+          emoji: "📦",
+        })
+      );
 
       setProducts(formattedProducts);
-
     } catch (error) {
-      console.error("Product fetching error:", error);
+      if (error.name === "AbortError") {
+        return;
+      }
+
+      console.error(
+        "Product fetching error:",
+        error
+      );
 
       setFetchError(
         "Unable to load products. Please check the server."
       );
-
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
     }
   }, []);
 
   // Load products when app starts
   useEffect(() => {
-    fetchProducts();
+    const controller = new AbortController();
+
+    fetchProducts(controller.signal);
+
+    return () => {
+      controller.abort();
+    };
   }, [fetchProducts]);
 
-  // Logout function
+  // Logout
   const handleLogout = () => {
     sessionStorage.removeItem("campuscycleStudent");
     sessionStorage.removeItem("campuscycleToken");
@@ -395,9 +532,7 @@ function AppRoutes() {
       {/* Login */}
       <Route
         path="/login"
-        element={
-          <Login onLogin={setStudent} />
-        }
+        element={<Login onLogin={setStudent} />}
       />
 
       {/* Register */}
@@ -415,6 +550,7 @@ function AppRoutes() {
   );
 }
 
+// Main App
 function App() {
   return (
     <BrowserRouter>
